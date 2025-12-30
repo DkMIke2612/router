@@ -1,8 +1,15 @@
 import { Link, useSearchParams, useRouter } from "@/route.tree";
 
+export const metadata = {
+    title: "Search",
+    description: "Search page",
+    keywords: ["search", "page"],
+}
+
 export default function Search() {
   const searchParams = useSearchParams();
   const { setSearchParams } = useRouter();
+
 
   const query = searchParams.get("q") || "";
   const page = searchParams.get("page") || "1";
@@ -29,7 +36,9 @@ export default function Search() {
       <main className="container py-12">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
-            <h1 className="text-3xl font-bold">Search</h1>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              Search <span className="dots-animation"></span>
+            </h1>
             <span className="badge badge-primary">Search Params</span>
           </div>
           

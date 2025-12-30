@@ -19,7 +19,7 @@ export function useParams<T extends Record<string, string> = Record<string, stri
 export function useSearchParams(): URLSearchParams {
   const context = useContext(RouterContext);
   if (!context) throw new Error('useSearchParams must be used within OlovaRouter');
-  
+
   return useMemo(() => {
     const params = new URLSearchParams();
     Object.entries(context.searchParams).forEach(([key, value]) => {

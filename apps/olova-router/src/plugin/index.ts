@@ -15,7 +15,7 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
 
   function generateRouteTreeFile() {
     const { routes, notFoundPages, layouts } = scanRoutes(absoluteRootDir, extensions);
-    
+
     const routeConfigs: RouteWithExport[] = routes.map(r => {
       const exportInfo = detectExportType(r.filePath);
       return {
@@ -24,7 +24,8 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
         params: r.params.length > 0 ? r.params : undefined,
         hasDefault: exportInfo.hasDefault,
         namedExport: exportInfo.namedExport,
-        hasMetadata: exportInfo.hasMetadata
+        hasMetadata: exportInfo.hasMetadata,
+        hasRoute: exportInfo.hasRoute
       };
     });
 
@@ -49,10 +50,10 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
         hasMetadata: exportInfo.hasMetadata
       };
     });
-    
+
     const content = generateRouteTree(routeConfigs, notFoundConfigs, layoutConfigs, absoluteRootDir);
     const treePath = path.resolve(absoluteRootDir, 'route.tree.ts');
-    
+
     const existing = fs.existsSync(treePath) ? fs.readFileSync(treePath, 'utf-8') : '';
     if (existing !== content) {
       fs.writeFileSync(treePath, content);
@@ -66,7 +67,7 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
     watcher = fs.watch(absoluteRootDir, { recursive: true }, (eventType, filename) => {
       if (!filename) return;
       if (filename.includes('route.tree.ts')) return;
-      
+
       const isIndexFile = filename.endsWith('index.tsx') || filename.endsWith('index.ts');
       const isAppFile = filename === 'App.tsx' || filename === 'App.ts';
       const is404File = filename.endsWith('404.tsx') || filename.endsWith('404.ts');
@@ -74,7 +75,7 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
       const isDirectory = !filename.includes('.');
       const isDynamicSegment = filename.includes('$') || filename.includes('[');
       const isRenameEvent = eventType === 'rename';
-      
+
       if (isIndexFile || isAppFile || is404File || isLayoutFile || isDirectory || isDynamicSegment || isRenameEvent) {
         setTimeout(() => generateRouteTreeFile(), 100);
       }
@@ -93,7 +94,7 @@ export function olovaRouter(options: OlovaRouterOptions = {}): PluginOption {
 
     buildStart() {
       generateRouteTreeFile();
-      
+
       if (config.command === 'serve') {
         startWatcher();
       }

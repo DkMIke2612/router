@@ -4,10 +4,10 @@ import type { RouteEntry, NotFoundEntry, ScanResult, LayoutEntry } from '../type
 import { pathToRoute, isRouteGroup } from '../utils';
 
 function scanDirectory(
-  dir: string, 
-  rootDir: string, 
-  extensions: string[], 
-  routes: RouteEntry[], 
+  dir: string,
+  rootDir: string,
+  extensions: string[],
+  routes: RouteEntry[],
   notFoundPages: NotFoundEntry[],
   layouts: LayoutEntry[],
   isRoot = false
@@ -25,13 +25,13 @@ function scanDirectory(
     } else if (entry.isFile()) {
       const ext = path.extname(entry.name);
       const baseName = path.basename(entry.name, ext);
-      
+
       if (baseName === '_layout' && extensions.includes(ext)) {
         const relativePath = path.relative(rootDir, dir);
         const { routePath } = pathToRoute(relativePath, path.sep);
-        layouts.push({ 
-          path: isRoot ? '/' : routePath, 
-          filePath: fullPath 
+        layouts.push({
+          path: isRoot ? '/' : routePath,
+          filePath: fullPath
         });
       }
       else if (baseName === '404' && extensions.includes(ext)) {
@@ -55,7 +55,7 @@ export function scanRoutes(rootDir: string, extensions: string[]): ScanResult {
   const notFoundPages: NotFoundEntry[] = [];
   const layouts: LayoutEntry[] = [];
   const absoluteRoot = path.isAbsolute(rootDir) ? rootDir : path.resolve(rootDir);
-  
+
   if (!fs.existsSync(absoluteRoot)) {
     throw new Error(`Olova Router: Root directory does not exist: ${absoluteRoot}`);
   }

@@ -1,17 +1,17 @@
 import type { ReactNode } from 'react';
 import { useRouter } from './context';
 
-type ResolveSegment<S extends string> = 
-  S extends `:${string}` ? string : 
-  S extends '*' ? string : 
+type ResolveSegment<S extends string> =
+  S extends `:${string}` ? string :
+  S extends '*' ? string :
   S;
 
-type ResolvePathSegments<Path extends string> = 
+type ResolvePathSegments<Path extends string> =
   Path extends `${infer Segment}/${infer Rest}`
     ? `${ResolveSegment<Segment>}/${ResolvePathSegments<Rest>}`
     : ResolveSegment<Path>;
 
-export type ResolveRoutePath<Path extends string> = 
+export type ResolveRoutePath<Path extends string> =
   Path extends `${infer Base}/*`
     ? `${ResolvePathSegments<Base>}/${string}`
     : ResolvePathSegments<Path>;

@@ -1,8 +1,3 @@
-/**
- * Olova Router - Route Generator Module
- * Generates a real routes.ts file with type-safe paths
- */
-
 import type { RouteConfig } from './types';
 
 export function generateRoutesFile(routes: RouteConfig[]): string {

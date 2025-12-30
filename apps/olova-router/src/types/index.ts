@@ -1,6 +1,33 @@
 import type { ComponentType, ReactNode } from 'react';
 export type { PluginOption, ResolvedConfig } from 'vite';
 
+export interface LoaderContext {
+  params: Record<string, string>;
+  searchParams: URLSearchParams;
+  signal: AbortSignal;
+}
+
+export interface ActionContext {
+  params: Record<string, string>;
+  request: Request;
+}
+
+export type LoaderFunction<T = unknown> = (context: LoaderContext) => Promise<T> | T;
+
+export type ActionFunction<T = unknown> = (context: ActionContext) => Promise<T> | T;
+
+export interface RouteDefinition<TLoader = unknown, TAction = unknown> {
+  __isRouteDefinition: true;
+  loader?: LoaderFunction<TLoader>;
+  action?: ActionFunction<TAction>;
+  preload: boolean;
+  pendingComponent?: ComponentType;
+  errorComponent?: ComponentType<{ error: Error; retry: () => void }>;
+  staleTime: number;
+  validateParams?: (params: Record<string, string>) => unknown;
+  beforeEnter?: (context: LoaderContext) => boolean | Promise<boolean>;
+}
+
 export interface RouteEntry {
   path: string;
   filePath: string;
@@ -13,7 +40,6 @@ export interface ScannerOptions {
   extensions: string[];
 }
 
-/** Metadata configuration */
 export interface Metadata {
   title?: string;
   description?: string;
@@ -21,7 +47,6 @@ export interface Metadata {
   [key: string]: any;
 }
 
-/** Route configuration for the generated module */
 export interface RouteConfig {
   path: string;
   component: string;
@@ -66,21 +91,19 @@ export interface ScanResult {
   layouts: LayoutEntry[];
 }
 
-/** Route with export detection information for generator */
 export interface RouteWithExport extends RouteConfig {
   hasDefault: boolean;
   namedExport: string | null;
   hasMetadata: boolean;
+  hasRoute: boolean;
 }
 
-/** 404 page with export detection information */
 export interface NotFoundWithExport extends NotFoundEntry {
   hasDefault: boolean;
   namedExport: string | null;
   hasMetadata: boolean;
 }
 
-/** Layout with export detection information */
 export interface LayoutWithExport extends LayoutEntry {
   hasDefault: boolean;
   namedExport: string | null;
@@ -89,13 +112,17 @@ export interface LayoutWithExport extends LayoutEntry {
 
 export interface Route {
   path: string;
-  component: ComponentType;
+  component?: ComponentType;
+  loader?: () => Promise<any>;
   metadata?: Metadata;
+
+  routeDefinition?: RouteDefinition;
 }
 
 export interface LayoutRoute {
   path: string;
-  layout: ComponentType;
+  layout?: ComponentType;
+  loader?: () => Promise<any>;
   children: Route[];
   metadata?: Metadata;
 }
@@ -120,5 +147,3 @@ export interface RouterContextType {
 export interface OutletContextType {
   content: ReactNode;
 }
-
-

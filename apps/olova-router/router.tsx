@@ -1,7 +1,3 @@
-/**
- * Olova Router - Client-Side Router Component
- */
-
 import { useState, useEffect, createContext, useContext, useMemo, type ReactNode, type ComponentType } from 'react';
 
 interface Route {
@@ -9,51 +5,39 @@ interface Route {
   component: ComponentType;
 }
 
-/** Layout route with nested children */
 export interface LayoutRoute {
   path: string;
   layout: ComponentType;
   children: Route[];
 }
 
-/** 404 page configuration */
 export interface NotFoundPageConfig {
   pathPrefix: string;
   component: ComponentType;
 }
 
-/** Search params type - values can be string or array for multi-value params */
 export type SearchParams = Record<string, string | string[]>;
 
-/** Options for setSearchParams */
 export interface SetSearchParamsOptions {
-  replace?: boolean;  // Use replaceState instead of pushState
-  merge?: boolean;    // Merge with existing params instead of replacing all
+  replace?: boolean;
+  merge?: boolean;
 }
 
-/**
- * Parse URL search string into SearchParams object
- * Handles multi-value params (same key multiple times)
- */
 function parseSearchParams(search: string): SearchParams {
   const params: SearchParams = {};
   const urlParams = new URLSearchParams(search);
-  
+
   for (const key of urlParams.keys()) {
     const values = urlParams.getAll(key);
     params[key] = values.length === 1 ? values[0] : values;
   }
-  
+
   return params;
 }
 
-/**
- * Build URL search string from params object
- * Handles arrays for multi-value params, null to remove
- */
 function buildSearchString(params: Record<string, string | string[] | null>): string {
   const urlParams = new URLSearchParams();
-  
+
   for (const [key, value] of Object.entries(params)) {
     if (value === null || value === undefined) continue;
     if (Array.isArray(value)) {
@@ -62,7 +46,7 @@ function buildSearchString(params: Record<string, string | string[] | null>): st
       urlParams.set(key, value);
     }
   }
-  
+
   const str = urlParams.toString();
   return str ? `?${str}` : '';
 }
@@ -77,7 +61,6 @@ interface RouterContextType {
 
 const RouterContext = createContext<RouterContextType | null>(null);
 
-/** Context for passing the matched child route to Outlet */
 interface OutletContextType {
   component: ComponentType | null;
   params: Record<string, string>;
@@ -96,10 +79,6 @@ export function useParams<T extends Record<string, string> = Record<string, stri
   return (context?.params || {}) as T;
 }
 
-/**
- * Hook to read and update URL search params (query string)
- * @returns [searchParams, setSearchParams] tuple
- */
 export function useSearchParams(): [
   SearchParams,
   (params: Record<string, string | string[] | null>, options?: SetSearchParamsOptions) => void
@@ -109,10 +88,6 @@ export function useSearchParams(): [
   return [context.searchParams, context.setSearchParams];
 }
 
-/**
- * Outlet component - renders the matched child route inside a layout
- * Use this in _layout.tsx files to render nested routes
- */
 export function Outlet() {
   const context = useContext(OutletContext);
   if (!context?.component) return null;
@@ -125,23 +100,23 @@ function matchRoute(pattern: string, pathname: string) {
   const pathParts = pathname.split('/').filter(Boolean);
 
   const params: Record<string, string> = {};
-  
+
   for (let i = 0; i < patternParts.length; i++) {
     const patternPart = patternParts[i];
     const pathPart = pathParts[i];
-    
+
     // Catch-all: * matches rest of path
     if (patternPart === '*') {
       // Get the param name from the route (stored as slug by default)
       params['slug'] = pathParts.slice(i).join('/');
       return { match: true, params };
     }
-    
+
     // No more path parts but pattern expects more
     if (pathPart === undefined) {
       return { match: false, params: {} };
     }
-    
+
     // Dynamic segment :param
     if (patternPart.startsWith(':')) {
       params[patternPart.slice(1)] = pathPart;
@@ -149,7 +124,7 @@ function matchRoute(pattern: string, pathname: string) {
       return { match: false, params: {} };
     }
   }
-  
+
   // If pattern is exhausted but path has more parts, no match
   if (pathParts.length > patternParts.length) {
     return { match: false, params: {} };
@@ -173,12 +148,12 @@ function matchLayoutScope(layoutPath: string, pathname: string): boolean {
  */
 function findNotFoundPage(path: string, notFoundPages: NotFoundPageConfig[]): ComponentType | null {
   if (!notFoundPages || notFoundPages.length === 0) return null;
-  
+
   // Sort by prefix length descending (most specific first)
-  const sorted = [...notFoundPages].sort((a, b) => 
+  const sorted = [...notFoundPages].sort((a, b) =>
     b.pathPrefix.length - a.pathPrefix.length
   );
-  
+
   // Find the most specific matching 404
   for (const nf of sorted) {
     // Global 404 (empty prefix) matches everything
@@ -202,7 +177,7 @@ interface OlovaRouterProps {
 
 export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound = <div>404 - Not Found</div> }: OlovaRouterProps) {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
-  const [searchParams, setSearchParamsState] = useState<SearchParams>(() => 
+  const [searchParams, setSearchParamsState] = useState<SearchParams>(() =>
     parseSearchParams(window.location.search)
   );
 
@@ -226,9 +201,9 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
     options: SetSearchParamsOptions = {}
   ) => {
     const { replace = false, merge = false } = options;
-    
+
     let finalParams: Record<string, string | string[] | null>;
-    
+
     if (merge) {
       // Merge with existing params
       finalParams = { ...searchParams, ...newParams };
@@ -242,16 +217,16 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
       // Replace all params
       finalParams = newParams;
     }
-    
+
     const searchString = buildSearchString(finalParams as Record<string, string | string[] | null>);
     const newUrl = currentPath + searchString;
-    
+
     if (replace) {
       window.history.replaceState({}, '', newUrl);
     } else {
       window.history.pushState({}, '', newUrl);
     }
-    
+
     setSearchParamsState(parseSearchParams(searchString));
   };
 
@@ -262,7 +237,7 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
       const bHasCatchAll = b.path.includes('*');
       const aHasDynamic = a.path.includes(':');
       const bHasDynamic = b.path.includes(':');
-      
+
       if (aHasCatchAll && !bHasCatchAll) return 1;
       if (!aHasCatchAll && bHasCatchAll) return -1;
       if (aHasDynamic && !bHasDynamic) return 1;
@@ -313,13 +288,13 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
     // Render layouts from outermost to innermost
     // The innermost outlet will render the actual page component
     let content: ReactNode = Component ? <Component /> : notFound;
-    
+
     // Build from inside out - start with the most specific layout
     for (let i = 0; i < matchingLayouts.length; i++) {
       const layout = matchingLayouts[i];
       const Layout = layout.layout;
       const childComponent = i === 0 ? Component : null;
-      
+
       content = (
         <OutletContext.Provider value={{ component: i === 0 ? Component : null, params }}>
           <Layout />
@@ -330,20 +305,20 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
     // Actually, we need to nest them properly
     // Start from innermost (page) and wrap with layouts
     content = Component ? <Component /> : notFound;
-    
+
     // Wrap from most specific to least specific (reverse order for proper nesting)
     for (let i = 0; i < matchingLayouts.length; i++) {
       const layout = matchingLayouts[i];
       const Layout = layout.layout;
       const prevContent = content;
-      
+
       // Create a wrapper component that provides the outlet context
       const WrappedLayout = () => (
         <OutletContext.Provider value={{ component: () => <>{prevContent}</>, params }}>
           <Layout />
         </OutletContext.Provider>
       );
-      
+
       content = <WrappedLayout />;
     }
 
@@ -363,27 +338,27 @@ export function OlovaRouter({ routes, layouts = [], notFoundPages = [], notFound
  */
 
 // Resolve a single path segment: ':param' or '*' becomes string, otherwise literal
-type ResolveSegment<S extends string> = 
-  S extends `:${string}` 
-    ? string 
-    : S extends '*' 
-      ? string 
+type ResolveSegment<S extends string> =
+  S extends `:${string}`
+    ? string
+    : S extends '*'
+      ? string
       : S;
 
 // Recursively resolve all segments in a path
-type ResolvePathSegments<Path extends string> = 
+type ResolvePathSegments<Path extends string> =
   Path extends `${infer Segment}/${infer Rest}`
     ? `${ResolveSegment<Segment>}/${ResolvePathSegments<Rest>}`
     : ResolveSegment<Path>;
 
 // For catch-all routes ending with *, allow additional path segments
-type ResolveCatchAll<Path extends string> = 
+type ResolveCatchAll<Path extends string> =
   Path extends `${infer Base}/*`
     ? `${Base}/${string}`
     : Path;
 
 // Main type: resolve route pattern to accept concrete paths
-export type ResolveRoutePath<Path extends string> = 
+export type ResolveRoutePath<Path extends string> =
   Path extends `${infer Base}/*`
     ? `${ResolvePathSegments<Base>}/${string}`
     : ResolvePathSegments<Path>;

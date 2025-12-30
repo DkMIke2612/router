@@ -1,10 +1,10 @@
 export type { OlovaRouterOptions, RouteEntry, RouteConfig, NotFoundEntry } from './types';
 
-export { 
-  OlovaRouter, 
-  useRouter, 
-  useParams, 
-  useSearchParams, 
+export {
+  OlovaRouter,
+  useRouter,
+  useParams,
+  useSearchParams,
   usePathname,
   createLink,
   Outlet,

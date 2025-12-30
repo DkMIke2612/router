@@ -12,6 +12,8 @@ A modern file-based routing starter template for **React 19** + **Vite** applica
 - **Route Groups** - Organize routes without affecting URLs (`(auth)`)
 - **Search Params** - Built-in query parameter handling
 - **404 Pages** - Custom not found page support
+- **Route Metadata** - SEO-friendly title, description, and keywords
+- **Client-Only Data Loading** - Loaders, actions, and caching
 
 ## Getting Started
 
@@ -89,6 +91,11 @@ import {
   useRouter, // Navigation hook
   useParams, // Access route parameters
   useSearchParams, // Access query parameters
+  usePathname, // Get current pathname
+  Outlet, // Render child routes in layouts
+  clientOnly, // Define loaders and actions
+  useLoaderData, // Access loader data
+  useActionData, // Access action result
 } from "@/route.tree";
 ```
 
@@ -116,6 +123,90 @@ import {
    ```
    src/(dashboard)/settings/index.tsx → /settings
    ```
+
+## Route Metadata
+
+Add SEO metadata to any route by exporting a `metadata` object:
+
+```tsx
+// src/about/index.tsx
+export const metadata = {
+  title: "About Us - My App",
+  description: "Learn more about our company and mission",
+  keywords: ["about", "company", "mission"],
+};
+
+export default function About() {
+  return <h1>About Us</h1>;
+}
+```
+
+The router automatically updates the document title and meta tags when navigating.
+
+| Property      | Type       | Description            |
+| ------------- | ---------- | ---------------------- |
+| `title`       | `string`   | Page title             |
+| `description` | `string`   | Meta description       |
+| `keywords`    | `string[]` | Meta keywords          |
+| `[key]`       | `any`      | Custom metadata fields |
+
+## Client-Only Data Loading
+
+Use `clientOnly` to define loaders and actions for routes:
+
+```tsx
+// src/users/$id/index.tsx
+import { useLoaderData, useParams, clientOnly } from "@/route.tree";
+
+// Define the route configuration
+export const route = clientOnly({
+  loader: async ({ params }) => {
+    const res = await fetch(`/api/users/${params.id}`);
+    return res.json();
+  },
+  pendingComponent: () => <div>Loading user...</div>,
+  errorComponent: ({ error, retry }) => (
+    <div>
+      <p>Error: {error.message}</p>
+      <button onClick={retry}>Retry</button>
+    </div>
+  ),
+});
+
+export default function UserProfile() {
+  const user = useLoaderData();
+  const { id } = useParams();
+
+  return <h1>{user.name}</h1>;
+}
+```
+
+### clientOnly Options
+
+| Option             | Type                            | Description                     |
+| ------------------ | ------------------------------- | ------------------------------- |
+| `loader`           | `(ctx) => Promise<T>`           | Fetch data before rendering     |
+| `action`           | `(ctx) => Promise<T>`           | Handle form submissions         |
+| `pendingComponent` | `ComponentType`                 | Show while loading              |
+| `errorComponent`   | `ComponentType<{error, retry}>` | Show on error with retry        |
+| `preload`          | `boolean`                       | Preload data on link hover      |
+| `staleTime`        | `number`                        | Cache duration in ms            |
+| `validateParams`   | `(params) => T`                 | Validate/transform route params |
+| `beforeEnter`      | `(ctx) => boolean`              | Guard navigation                |
+
+### Data Hooks
+
+```tsx
+import {
+  useLoaderData, // Access loader data
+  useActionData, // Access action result
+  usePending, // Check if loading/submitting
+  useIsLoading, // Check if loader is running
+  useIsSubmitting, // Check if action is running
+  useLoaderError, // Get loader error
+  useSubmit, // Programmatic form submission
+} from "@/route.tree";
+```
 
 ## Tech Stack
 

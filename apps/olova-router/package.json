@@ -1,6 +1,6 @@
 {
   "name": "olova-router",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "A client-first folder-based routing for React + Vite applications",
   "author": "",
   "license": "MIT",

